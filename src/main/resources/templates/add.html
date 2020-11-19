@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加</title>
+</head>
+<body>
+<form class="form-add" action="/add" method="post" align="center">
+    姓名：<input type="text" name="name" class="form-control" required="" autofocus="" ><br>
+    电话：<input type="telephone" name="tel" class="form-control" required="" autofocus="" ><br>
+    邮箱：<input type="email" name="email" class="form-control" required="" autofocus="" ><br>
+    地址：<input type="text" name="address" class="form-control" required="" autofocus="" ><br>
+    Q Q：<input type="telephone" name="QQ" class="form-control" required="" autofocus="" ><br>
+    <!--/*@thymesVar id="message" type=""*/-->
+    <p style="color: red" th:text="${message}" th:if="${not #strings.isEmpty(message)}"></p>
+    <input type="submit" name="add" value="提交" >
+</form>
+
+</body>
+</html>

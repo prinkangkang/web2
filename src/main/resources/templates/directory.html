@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>通讯录</title>
+</head>
+<br>
+<body>
+<div align="center">
+    <table border=1>
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <th>地址</th>
+            <th>QQ</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lis:${List}">
+            <td th:text="${lis.name}"></td>
+            <td th:text="${lis.tel}"></td>
+            <td th:text="${lis.email}"></td>
+            <td th:text="${lis.address}"></td>
+            <td th:text="${lis.QQ}"></td>
+            <td>
+                <a th:href="@{/edit/}+${lis.id}"  class="editBtn" >编辑</a>
+                <a th:href="@{/delete/}+${lis.id}"  class="deleteBtn" >删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div align="center">
+    <tr>
+        <td>
+            <form class="form-add" action="/addpage" method="post">
+            <input type="submit" value="增加" /></form>
+            <!--<input type="submit" value="编辑" onclick=""/>
+            <input type="submit" value="删除" onclick=""/>-->
+        </td>
+    </tr>
+</div>
+</body>
+</html>
