@@ -1,15 +1,20 @@
 package com.example.demo;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+@Entity(name = "directory")
 public class Directory {
-    public int id=-1;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Id
+    public int id;
     public String name;
     public String tel;
     public String email;
     public String address;
     public String QQ;
 
-    public Directory(int id, String name, String tel, String email, String address, String QQ) {
-        this.id=id;
+    public Directory(String name, String tel, String email, String address, String QQ) {
         this.name=name;
         this.tel=tel;
         this.email=email;
@@ -17,4 +22,7 @@ public class Directory {
         this.QQ = QQ;
     }
 
+    public Directory() {
+
+    }
 }

@@ -1,21 +1,25 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Directory;
-import jdk.nashorn.internal.ir.RuntimeNode;
+import com.example.demo.dService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.WebParam;
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 
 @Controller
 public class AddController {
+    @Autowired
+    private dService service;
 
     public static HashMap<Integer,Directory> map=new HashMap<>();
-    int i=0;
     @PostMapping("/add")
     public String add(@RequestParam("name") String name,
                       @RequestParam("tel") String tel,
@@ -26,8 +30,9 @@ public class AddController {
     {
         if(name!=null&&tel!=null&&email!=null&&address!=null&&QQ!=null)
         {
-            map.put(i,new Directory(i,name,tel,email,address,QQ));
-            i++;
+            Directory d=new Directory(name,tel,email,address,QQ);
+            service.save(d);
+
         }
         return "redirect:/directory.html";
     }
@@ -39,13 +44,14 @@ public class AddController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
+        service.delete(id);
         map.remove(id);
         return "redirect:/directory.html";
     }
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model)
     {
-        model.addAttribute("list",map.get(id));
+        model.addAttribute("list",service.get(id));
         return "edit";
     }
     @PostMapping("/edit")
@@ -57,8 +63,36 @@ public class AddController {
                            @RequestParam("id")  int id
     )
     {
-        map.put(id,new Directory(id,name,tel,email,address,QQ));
+        service.delete(id);
+        if(name!=null&&tel!=null&&email!=null&&address!=null&&QQ!=null)
+        {
+            Directory d=new Directory(name,tel,email,address,QQ);
+            service.save(d);
+
+        }
         return "redirect:/directory.html";
+    }
+    @PostMapping("/tel_judge")
+    public void tel_judge(String tel, HttpServletResponse response)
+    {
+        List<Directory> list= service.getALL();
+        for(Directory d:list)
+        {
+            if(tel.equals(d.tel)) {
+                try {
+                    response.getWriter().print("false");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
+
+        }
+        try {
+            response.getWriter().print("true");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
